@@ -13,8 +13,5 @@ const config = {
   docs: {
     autodocs: "tag",
   },
-  features: {
-    storyStoreV7: false,
-  },
 };
 export default config;
