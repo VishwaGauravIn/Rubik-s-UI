@@ -1,50 +1,80 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './button.css';
+import React from "react";
+import PropTypes from "prop-types";
 
-/**
- * Primary UI component for user interaction
- */
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+import "./button.css";
+
+import { buttonTypes, buttonVariants, buttonSizes } from "./constants";
+
+const Button = (props) => {
+  const {
+    text,
+    isDisabled,
+    type,
+    size,
+    backgroundColor,
+    textColor,
+    onClick,
+    shadow,
+    startIcon,
+    endIcon,
+  } = props;
+
+  const shadows = shadow ? "shadow" : "";
+  const disabled = isDisabled ? "disabled" : "";
+
   return (
     <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
+      onClick={onClick}
+      className={[
+        "button",
+        `${size}`,
+        `${type}`,
+        `${shadows}`,
+        `${disabled}`,
+        `bg-${backgroundColor}`,
+        `text-${textColor}`,
+      ].join(" ")}
+      disabled={isDisabled}
       {...props}
     >
-      {label}
+      {startIcon && (
+        <span class="material-icons icon-start">local_grocery_store</span>
+      )}
+      {text}
+      {endIcon && (
+        <span class="material-icons icon-end">local_grocery_store</span>
+      )}
     </button>
   );
 };
 
 Button.propTypes = {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary: PropTypes.bool,
-  /**
-   * What background color to use
-   */
+  text: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  type: PropTypes.oneOf([
+    buttonTypes.outline,
+    buttonTypes.filled,
+    buttonTypes.text,
+  ]),
+  variant: PropTypes.oneOf([buttonVariants.oval, buttonVariants.rectangular]),
+  size: PropTypes.oneOf([
+    buttonSizes.small,
+    buttonSizes.medium,
+    buttonSizes.large,
+  ]),
   backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  /**
-   * Button contents
-   */
-  label: PropTypes.string.isRequired,
-  /**
-   * Optional click handler
-   */
+  textColor: PropTypes.string,
   onClick: PropTypes.func,
 };
 
 Button.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: 'medium',
-  onClick: undefined,
+  isDisabled: false,
+  type: "filled",
+  variant: "oval",
+  size: "medium",
+  backgroundColor: "transparent",
+  textColor: "white",
+  shadow: true,
 };
+
+export { Button };
